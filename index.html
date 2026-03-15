@@ -334,6 +334,18 @@ function buildFilename(name) {
 }
 
 /* ──────────────────────────────────────────
+   FORMAT DUPLICATE DISPLAY
+   0        → "0"
+   1        → "1 URL"
+   2+       → "N URLs"
+────────────────────────────────────────── */
+function formatDup(dup) {
+  if (dup === 0) return '0';
+  if (dup === 1) return '1 URL';
+  return dup + ' URLs';
+}
+
+/* ──────────────────────────────────────────
    MASTER UPDATE
 ────────────────────────────────────────── */
 function onUpdate() {
@@ -372,7 +384,7 @@ function onUpdate() {
   /* Stats */
   document.getElementById('statTotal').textContent  = total;
   document.getElementById('statCat').textContent    = `${total}/${total}`;
-  document.getElementById('statDup').textContent    = dup;
+  document.getElementById('statDup').textContent    = formatDup(dup);   // ← UPDATED
   document.getElementById('statUpload').textContent = `${upload}/${total}`;
 
   /* Wiki */
@@ -398,7 +410,7 @@ Done uploading/updating on GD the data from disputes CP P2 ${year} file (${total
 File: ${fname}
 Total: ${total} URLs
 Categorized: ${total}/${total}
-Duplicate: ${dup}
+Duplicate: ${formatDup(dup)}
 Uploaded on GD: ${upload}/${total}
 Comment: Disputes Priority 2 Checkpoint accepted at ${year}
 
