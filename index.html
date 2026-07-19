@@ -318,6 +318,7 @@ function cleanUrl(raw) {
   if (!u) return '';
   u = u.replace(/^https?:\/\//i, '');        // remove http:// https://
   u = u.replace(/:(?:80|443)(\/|$)/, '$1'); // remove :80 :443
+  u = u.replace(/^www\./i, '');             // remove leading "www." only (not www2., www3., etc)
   u = u.replace(/\/$/, '');                 // remove trailing slash
   return u.trim();
 }
@@ -436,7 +437,7 @@ function downloadFile() {
     null,  // B — empty
     null,  // C — empty
     99999, // D
-    'Immutable', // E
+    '',    // E — Immutable intentionally left blank on export
     EXCL   // F
   ]);
 
