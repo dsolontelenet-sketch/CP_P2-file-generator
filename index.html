@@ -379,9 +379,9 @@
       <input type="text" id="nameInput" placeholder="e.g. Diovic" oninput="onUpdate()">
     </div>
 
-    <!-- Auto timestamp (read-only) -->
+    <!-- Auto year (read-only) -->
     <div class="field">
-      <label>Accepted Date <span class="hint">— auto from today's date</span></label>
+      <label>Accepted Year <span class="hint">— auto from today's year</span></label>
       <div class="timestamp-display">
         <span class="ts-icon">🕒</span>
         <span id="timestampValue">—</span>
@@ -611,13 +611,9 @@ function getReadableDate() {
 }
 function getYear() { return new Date().getFullYear(); }
 
-/* Returns today's date as YYYYMMDD (e.g. 20260921). Real-time: uses current date on every call. */
+/* Returns just the current year (e.g. 2026). Real-time: uses current year on every call. */
 function getAcceptedTimestamp() {
-  const d = new Date();
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth()+1).padStart(2,'0');
-  const dd = String(d.getDate()).padStart(2,'0');
-  return `${yyyy}${mm}${dd}`;
+  return String(new Date().getFullYear());
 }
 
 function cleanUrl(raw) {
@@ -904,7 +900,7 @@ function onUpdate() {
   const dup    = Math.max(0, Math.min(parseInt(document.getElementById('dupInput').value) || 0, total));
   const upload = Math.max(0, total - dup);
 
-  /* Auto timestamp display */
+  /* Auto year display */
   document.getElementById('timestampValue').textContent = getAcceptedTimestamp();
 
   /* URL count label */
