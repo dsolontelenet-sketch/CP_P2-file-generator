@@ -21,6 +21,9 @@
     --warn: #f59e0b;
     --mono: 'Space Mono', monospace;
     --sans: 'Syne', sans-serif;
+    --ns-accent: #c084fc;
+    --ns-border: #2a1a3a;
+    --ns-bg: #140e1a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -104,6 +107,32 @@
   textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
   textarea::placeholder { color: var(--muted); }
 
+  /* AUTO TIMESTAMP DISPLAY */
+  .timestamp-display {
+    background: var(--surface);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--success);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .timestamp-display .ts-icon {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+  .timestamp-display .ts-label {
+    color: var(--muted);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-left: auto;
+  }
+
   /* URL COUNT */
   .url-count {
     margin-top: 9px; font-family: var(--mono); font-size: 0.72rem;
@@ -179,12 +208,148 @@
   .btn-copy:hover { border-color: var(--success); color: var(--success); }
   .btn-copy.copied { border-color: var(--success); color: var(--success); }
 
+  /* ══════════════════════════════════════════
+     NS MANAGER REPORT
+  ═══════════════════════════════════════════ */
+  .ns-section {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--ns-border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 18px;
+    animation: fadeUp 0.6s ease;
+  }
+  .ns-section.visible { display: block; }
+
+  .ns-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 22px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--ns-border);
+  }
+  .ns-title {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 3px;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--ns-accent);
+  }
+  .ns-title::before { content: ''; width: 18px; height: 2px; background: var(--ns-accent); display: inline-block; }
+  .ns-badge {
+    font-size: 0.62rem; font-family: var(--mono);
+    border-radius: 20px; padding: 3px 12px;
+    background: rgba(192,132,252,0.15);
+    border: 1px solid rgba(192,132,252,0.3);
+    color: var(--ns-accent);
+    letter-spacing: 1px;
+  }
+
+  .ns-field { margin-bottom: 18px; }
+  .ns-field:last-child { margin-bottom: 0; }
+
+  .ns-field > label {
+    display: block; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+    font-family: var(--mono);
+  }
+
+  .ns-field input[type="text"] {
+    width: 100%; background: var(--surface);
+    border: 1px solid var(--ns-border); border-radius: 8px;
+    padding: 12px 14px; color: var(--text);
+    font-family: var(--sans); font-size: 0.9rem;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .ns-field input[type="text"]:focus { border-color: var(--ns-accent); box-shadow: 0 0 0 3px rgba(192,132,252,0.12); }
+  .ns-field input[type="text"]::placeholder { color: rgba(192,132,252,0.35); }
+
+  .ns-status-group { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .ns-status-btn {
+    flex: 1; min-width: 70px; padding: 9px 10px;
+    background: var(--surface); border: 1px solid var(--ns-border);
+    border-radius: 8px; color: var(--muted);
+    font-family: var(--mono); font-size: 0.72rem;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .ns-status-btn:hover { border-color: var(--ns-accent); color: var(--ns-accent); }
+  .ns-status-btn.active {
+    border-color: var(--ns-accent); color: var(--ns-accent);
+    background: rgba(192,132,252,0.1);
+    box-shadow: 0 0 0 3px rgba(192,132,252,0.08);
+  }
+
+  .ns-change-fields {
+    display: none;
+    margin-top: 10px;
+    padding: 14px;
+    background: rgba(192,132,252,0.04);
+    border: 1px dashed rgba(192,132,252,0.25);
+    border-radius: 8px;
+  }
+  .ns-change-fields.visible { display: block; }
+
+  .ns-change-fields .ns-field { margin-bottom: 10px; }
+  .ns-change-fields .ns-field:last-child { margin-bottom: 0; }
+
+  .ns-report-box {
+    background: var(--surface);
+    border: 1px solid var(--ns-border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 10px;
+  }
+  .ns-report-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .ns-report-box .lbl {
+    font-size: 0.63rem; font-family: var(--mono);
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 2px; margin-bottom: 0;
+  }
+  .ns-report-message {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: #c8d6e8;
+    white-space: pre-wrap;
+    word-break: break-word;
+    user-select: all;
+  }
+
+  .ns-report-message .hl-ns-url  { color: #c084fc; }
+  .ns-report-message .hl-ns-ts   { color: #ffd166; }
+  .ns-report-message .hl-ns-key  { color: var(--ns-accent); }
+  .ns-report-message .hl-ns-arrow { color: #fb923c; }
+  .ns-report-message .hl-ns-val  { color: var(--success); }
+
+  .ns-copy-btn {
+    background: transparent;
+    border: 1px solid var(--ns-border);
+    border-radius: 6px;
+    padding: 7px 16px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ns-copy-btn:hover { border-color: var(--ns-accent); color: var(--ns-accent); }
+  .ns-copy-btn.copied { border-color: var(--success); color: var(--success); }
+
+  .ns-divider { border: none; border-top: 1px solid var(--ns-border); margin: 18px 0; }
+
   @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
   @keyframes fadeUp   { from{opacity:0;transform:translateY(14px)}  to{opacity:1;transform:translateY(0)} }
 
   @media(max-width:580px) {
     .stats-grid  { grid-template-columns: 1fr 1fr; }
     .three-col   { grid-template-columns: 1fr; }
+    .ns-status-group { flex-direction: column; }
   }
 </style>
 </head>
@@ -212,6 +377,16 @@
     <div class="field">
       <label>Your Name <span class="hint">— used in filename</span></label>
       <input type="text" id="nameInput" placeholder="e.g. Diovic" oninput="onUpdate()">
+    </div>
+
+    <!-- Auto timestamp (read-only) -->
+    <div class="field">
+      <label>Accepted Date <span class="hint">— auto from today's date</span></label>
+      <div class="timestamp-display">
+        <span class="ts-icon">🕒</span>
+        <span id="timestampValue">—</span>
+        <span class="ts-label">AUTO</span>
+      </div>
     </div>
 
     <!-- Bulk URLs -->
@@ -279,7 +454,7 @@
         <input type="number" id="immutableInput" value="0" min="0" placeholder="0" oninput="onUpdate()">
       </div>
       <div class="field">
-        <label>Security Category</label>
+        <label>Security Category <span class="hint">— number triggers NS Report</span></label>
         <input type="text" id="secCatInput" placeholder="None" oninput="onUpdate()">
       </div>
     </div>
@@ -296,6 +471,129 @@
     <div class="wiki-box" id="wikiBox">—</div>
   </div>
 
+  <!-- ══════════════════════════════════════
+       CARD 4 · NS MANAGER REPORT (dynamic)
+  ════════════════════════════════════════ -->
+  <div class="ns-section" id="ns-section">
+    <div class="ns-header">
+      <div class="ns-title">
+        📋 NS Manager Report
+        <span class="ns-badge" id="ns-badge-text">Checkpoint P2</span>
+      </div>
+    </div>
+
+    <!-- Security URL -->
+    <div class="ns-field">
+      <label>Security URL</label>
+      <input type="text" id="nsSecurityUrl" placeholder="e.g. technologi.site" oninput="onUpdate()" />
+    </div>
+
+    <hr class="ns-divider">
+
+    <!-- Primary Status -->
+    <div class="ns-field">
+      <label>Primary Status</label>
+      <div class="ns-status-group" id="nsPrimaryStatusGroup">
+        <button class="ns-status-btn active" data-status="add" onclick="selectNSStatus('primary','add',this)">Add</button>
+        <button class="ns-status-btn" data-status="retained" onclick="selectNSStatus('primary','retained',this)">Retained</button>
+        <button class="ns-status-btn" data-status="changed" onclick="selectNSStatus('primary','changed',this)">Changed</button>
+        <button class="ns-status-btn" data-status="removed" onclick="selectNSStatus('primary','removed',this)">Removed</button>
+      </div>
+      <div class="ns-change-fields" id="nsPrimaryFields">
+        <div class="ns-field" id="nsPrimaryCatField">
+          <label id="nsPrimaryCatLabel">Category name</label>
+          <input type="text" id="nsPrimaryCat" placeholder="e.g. Computing & Internet" oninput="onUpdate()" />
+        </div>
+        <div class="ns-field" id="nsPrimaryNewField" style="display:none;">
+          <label>New category name</label>
+          <input type="text" id="nsPrimaryNewCat" placeholder="e.g. Miscellaneous" oninput="onUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <hr class="ns-divider">
+
+    <!-- Secondary Status -->
+    <div class="ns-field">
+      <label>Secondary Status</label>
+      <div class="ns-status-group" id="nsSecondaryStatusGroup">
+        <button class="ns-status-btn active" data-status="none" onclick="selectNSStatus('secondary','none',this)">No Secondary</button>
+        <button class="ns-status-btn" data-status="add" onclick="selectNSStatus('secondary','add',this)">Add</button>
+        <button class="ns-status-btn" data-status="retained" onclick="selectNSStatus('secondary','retained',this)">Retained</button>
+        <button class="ns-status-btn" data-status="changed" onclick="selectNSStatus('secondary','changed',this)">Changed</button>
+        <button class="ns-status-btn" data-status="removed" onclick="selectNSStatus('secondary','removed',this)">Removed</button>
+      </div>
+      <div class="ns-change-fields" id="nsSecondaryFields">
+        <div class="ns-field" id="nsSecondaryCatField">
+          <label id="nsSecondaryCatLabel">Category name</label>
+          <input type="text" id="nsSecondaryCat" placeholder="e.g. Phishing Sites" oninput="onUpdate()" />
+        </div>
+        <div class="ns-field" id="nsSecondaryNewField" style="display:none;">
+          <label>New category name</label>
+          <input type="text" id="nsSecondaryNewCat" placeholder="e.g. Malware Sites" oninput="onUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <hr class="ns-divider">
+
+    <!-- Security Status -->
+    <div class="ns-field">
+      <label>Security Status</label>
+      <div class="ns-status-group" id="nsSecurityStatusGroup">
+        <button class="ns-status-btn active" data-status="add" onclick="selectNSStatus('security','add',this)">Add</button>
+        <button class="ns-status-btn" data-status="retained" onclick="selectNSStatus('security','retained',this)">Retained</button>
+        <button class="ns-status-btn" data-status="changed" onclick="selectNSStatus('security','changed',this)">Changed</button>
+        <button class="ns-status-btn" data-status="removed" onclick="selectNSStatus('security','removed',this)">Removed</button>
+      </div>
+      <div class="ns-change-fields" id="nsSecurityFields">
+        <div class="ns-field" id="nsSecurityCatField">
+          <label id="nsSecurityCatLabel">Category name</label>
+          <input type="text" id="nsSecurityCat" placeholder="e.g. Phishing Sites" oninput="onUpdate()" />
+        </div>
+        <div class="ns-field" id="nsSecurityNewField" style="display:none;">
+          <label>New category name</label>
+          <input type="text" id="nsSecurityNewCat" placeholder="e.g. Malware Sites" oninput="onUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <hr class="ns-divider">
+
+    <!-- Tags Status -->
+    <div class="ns-field">
+      <label>Tags Status</label>
+      <div class="ns-status-group" id="nsTagsStatusGroup">
+        <button class="ns-status-btn active" data-status="add" onclick="selectNSStatus('tags','add',this)">Add</button>
+        <button class="ns-status-btn" data-status="retained" onclick="selectNSStatus('tags','retained',this)">Retained</button>
+        <button class="ns-status-btn" data-status="changed" onclick="selectNSStatus('tags','changed',this)">Changed</button>
+        <button class="ns-status-btn" data-status="removed" onclick="selectNSStatus('tags','removed',this)">Removed</button>
+      </div>
+      <div class="ns-change-fields" id="nsTagsFields">
+        <div class="ns-field" id="nsTagsCatField">
+          <label id="nsTagsCatLabel">Tag</label>
+          <input type="text" id="nsTagsCat" placeholder="e.g. Disputed" oninput="onUpdate()" />
+        </div>
+        <div class="ns-field" id="nsTagsNewField" style="display:none;">
+          <label>New tag</label>
+          <input type="text" id="nsTagsNewCat" placeholder="e.g. Resolved" oninput="onUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Preview -->
+    <div class="ns-report-box">
+      <div class="ns-report-header">
+        <div class="lbl">Report Preview</div>
+        <button class="ns-copy-btn" id="ns-copy-btn" onclick="copyNSReport()">
+          <span id="ns-copy-icon">⎘</span>
+          <span id="ns-copy-label">COPY</span>
+        </button>
+      </div>
+      <div class="ns-report-message" id="ns-report-message">—</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -303,7 +601,6 @@
    HELPERS
 ────────────────────────────────────────── */
 function getDateStr() {
-  // mm/dd/yyyy order, no separators → MMDDYYYY (e.g. Aug 4 2026 -> 08042026)
   const d = new Date();
   return String(d.getMonth()+1).padStart(2,'0')
        + String(d.getDate()).padStart(2,'0')
@@ -314,13 +611,22 @@ function getReadableDate() {
 }
 function getYear() { return new Date().getFullYear(); }
 
+/* Returns today's date as YYYYMMDD (e.g. 20260921). Real-time: uses current date on every call. */
+function getAcceptedTimestamp() {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${yyyy}${mm}${dd}`;
+}
+
 function cleanUrl(raw) {
   let u = raw.trim();
   if (!u) return '';
-  u = u.replace(/^https?:\/\//i, '');        // remove http:// https://
-  u = u.replace(/:(?:80|443)(\/|$)/, '$1'); // remove :80 :443
-  u = u.replace(/^www\./i, '');             // remove leading "www." only (not www2., www3., etc)
-  u = u.replace(/\/$/, '');                 // remove trailing slash
+  u = u.replace(/^https?:\/\//i, '');
+  u = u.replace(/:(?:80|443)(\/|$)/, '$1');
+  u = u.replace(/^www\./i, '');
+  u = u.replace(/\/$/, '');
   return u.trim();
 }
 
@@ -335,16 +641,257 @@ function buildFilename(name) {
   return `cebu_review_${getDateStr()}_CP_P2_${getYear()}_${name}`;
 }
 
-/* ──────────────────────────────────────────
-   FORMAT DUPLICATE DISPLAY
-   0        → "0"
-   1        → "1 URL"
-   2+       → "N URLs"
-────────────────────────────────────────── */
 function formatDup(dup) {
   if (dup === 0) return '0';
   if (dup === 1) return '1 URL';
   return dup + ' URLs';
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+/* ──────────────────────────────────────────
+   NS MANAGER STATE
+────────────────────────────────────────── */
+const nsStatus = {
+  primary: 'add',
+  secondary: 'none',
+  security: 'add',
+  tags: 'add'
+};
+
+function selectNSStatus(section, status, btn) {
+  nsStatus[section] = status;
+  const group = btn.closest('.ns-status-group');
+  group.querySelectorAll('.ns-status-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateNSFieldsVisibility();
+  onUpdate();
+}
+
+function updateNSFieldsVisibility() {
+  // Primary
+  const primaryFields = document.getElementById('nsPrimaryFields');
+  const primaryCatField = document.getElementById('nsPrimaryCatField');
+  const primaryNewField = document.getElementById('nsPrimaryNewField');
+  const primaryCatLabel = document.getElementById('nsPrimaryCatLabel');
+
+  primaryFields.classList.add('visible');
+  if (nsStatus.primary === 'changed') {
+    primaryCatLabel.textContent = 'Original category name';
+    primaryCatField.style.display = 'block';
+    primaryNewField.style.display = 'block';
+  } else {
+    primaryCatLabel.textContent = 'Category name';
+    primaryCatField.style.display = 'block';
+    primaryNewField.style.display = 'none';
+  }
+
+  // Secondary
+  const secondaryFields = document.getElementById('nsSecondaryFields');
+  const secondaryCatField = document.getElementById('nsSecondaryCatField');
+  const secondaryNewField = document.getElementById('nsSecondaryNewField');
+  const secondaryCatLabel = document.getElementById('nsSecondaryCatLabel');
+
+  if (nsStatus.secondary !== 'none') {
+    secondaryFields.classList.add('visible');
+    if (nsStatus.secondary === 'changed') {
+      secondaryCatLabel.textContent = 'Original category name';
+      secondaryCatField.style.display = 'block';
+      secondaryNewField.style.display = 'block';
+    } else {
+      secondaryCatLabel.textContent = 'Category name';
+      secondaryCatField.style.display = 'block';
+      secondaryNewField.style.display = 'none';
+    }
+  } else {
+    secondaryFields.classList.remove('visible');
+  }
+
+  // Security
+  const securityFields = document.getElementById('nsSecurityFields');
+  const securityCatField = document.getElementById('nsSecurityCatField');
+  const securityNewField = document.getElementById('nsSecurityNewField');
+  const securityCatLabel = document.getElementById('nsSecurityCatLabel');
+
+  securityFields.classList.add('visible');
+  if (nsStatus.security === 'changed') {
+    securityCatLabel.textContent = 'Original category name';
+    securityCatField.style.display = 'block';
+    securityNewField.style.display = 'block';
+  } else {
+    securityCatLabel.textContent = 'Category name';
+    securityCatField.style.display = 'block';
+    securityNewField.style.display = 'none';
+  }
+
+  // Tags
+  const tagsFields = document.getElementById('nsTagsFields');
+  const tagsCatField = document.getElementById('nsTagsCatField');
+  const tagsNewField = document.getElementById('nsTagsNewField');
+  const tagsCatLabel = document.getElementById('nsTagsCatLabel');
+
+  tagsFields.classList.add('visible');
+  if (nsStatus.tags === 'changed') {
+    tagsCatLabel.textContent = 'Original tag';
+    tagsCatField.style.display = 'block';
+    tagsNewField.style.display = 'block';
+  } else {
+    tagsCatLabel.textContent = 'Tag';
+    tagsCatField.style.display = 'block';
+    tagsNewField.style.display = 'none';
+  }
+}
+
+/* Returns the numeric value of the Security Category field, or null. */
+function getSecurityCategoryNumber() {
+  const raw = document.getElementById('secCatInput').value.trim();
+  if (!raw) return null;
+  if (!/^\d+$/.test(raw)) return null;
+  const n = parseInt(raw, 10);
+  return n > 0 ? n : null;
+}
+
+/* ──────────────────────────────────────────
+   NS REPORT BUILDERS
+────────────────────────────────────────── */
+function buildNSReport() {
+  const acc = getAcceptedTimestamp();
+  const secUrl = document.getElementById('nsSecurityUrl').value.trim();
+
+  const lines = [];
+  lines.push('Hi All,');
+  lines.push('');
+  lines.push(`We received a Checkpoint Disputes Priority 2 accepted at ${acc}`);
+  lines.push('');
+  if (secUrl) lines.push(secUrl);
+  lines.push('');
+
+  const primaryCat = document.getElementById('nsPrimaryCat').value.trim();
+  const primaryNewCat = document.getElementById('nsPrimaryNewCat').value.trim();
+  if (nsStatus.primary === 'add' && primaryCat) lines.push(`Primary: ${primaryCat}; added`);
+  else if (nsStatus.primary === 'retained' && primaryCat) lines.push(`Primary: ${primaryCat}; retained`);
+  else if (nsStatus.primary === 'changed' && primaryCat) lines.push(`Primary: ${primaryCat}; changed`);
+  else if (nsStatus.primary === 'removed' && primaryCat) lines.push(`Primary: ${primaryCat}; removed`);
+
+  const secondaryCat = document.getElementById('nsSecondaryCat').value.trim();
+  const secondaryNewCat = document.getElementById('nsSecondaryNewCat').value.trim();
+  if (nsStatus.secondary === 'add' && secondaryCat) lines.push(`Secondary: ${secondaryCat}; added`);
+  else if (nsStatus.secondary === 'retained' && secondaryCat) lines.push(`Secondary: ${secondaryCat}; retained`);
+  else if (nsStatus.secondary === 'changed' && secondaryCat) lines.push(`Secondary: ${secondaryCat}; changed`);
+  else if (nsStatus.secondary === 'removed' && secondaryCat) lines.push(`Secondary: ${secondaryCat}; removed`);
+
+  const securityCat = document.getElementById('nsSecurityCat').value.trim();
+  const securityNewCat = document.getElementById('nsSecurityNewCat').value.trim();
+  if (nsStatus.security === 'add' && securityCat) lines.push(`Security: ${securityCat}; added`);
+  else if (nsStatus.security === 'retained' && securityCat) lines.push(`Security: ${securityCat}; retained`);
+  else if (nsStatus.security === 'changed' && securityCat) lines.push(`Security: ${securityCat}; changed`);
+  else if (nsStatus.security === 'removed' && securityCat) lines.push(`Security: ${securityCat}; removed`);
+
+  const tagsCat = document.getElementById('nsTagsCat').value.trim();
+  const tagsNewCat = document.getElementById('nsTagsNewCat').value.trim();
+  if (nsStatus.tags === 'add' && tagsCat) lines.push(`Tags: ${tagsCat}; added`);
+  else if (nsStatus.tags === 'retained' && tagsCat) lines.push(`Tags: ${tagsCat}; retained`);
+  else if (nsStatus.tags === 'changed' && tagsCat) lines.push(`Tags: ${tagsCat}; changed`);
+  else if (nsStatus.tags === 'removed' && tagsCat) lines.push(`Tags: ${tagsCat}; removed`);
+
+  const changedLines = [];
+  if (nsStatus.primary === 'changed' && primaryNewCat) changedLines.push(`⇒Primary: ${primaryNewCat}`);
+  if (nsStatus.secondary === 'changed' && secondaryNewCat) changedLines.push(`⇒Secondary: ${secondaryNewCat}`);
+  if (nsStatus.security === 'changed' && securityNewCat) changedLines.push(`⇒Security: ${securityNewCat}`);
+  if (nsStatus.tags === 'changed' && tagsNewCat) changedLines.push(`⇒Tags: ${tagsNewCat}`);
+
+  if (changedLines.length > 0) {
+    lines.push('');
+    changedLines.forEach(l => lines.push(l));
+  }
+
+  lines.push('');
+  lines.push(`Comment: Disputes priority 2 Checkpoint accepted at ${acc}`);
+  lines.push('');
+  lines.push('-This site is a malware based on NetSTAR SHIELD.');
+
+  return lines.join('\n');
+}
+
+function renderNSReport() {
+  const el = document.getElementById('ns-report-message');
+  const report = buildNSReport();
+  if (!report) { el.textContent = '—'; return; }
+
+  const acc = getAcceptedTimestamp();
+  const secUrl = document.getElementById('nsSecurityUrl').value.trim();
+
+  const lines = [];
+  lines.push('Hi All,');
+  lines.push('');
+  lines.push(`We received a <span class="hl-ns-key">Checkpoint</span> Disputes Priority 2 accepted at <span class="hl-ns-ts">${acc}</span>`);
+  lines.push('');
+  if (secUrl) lines.push(`<span class="hl-ns-url">${secUrl}</span>`);
+  lines.push('');
+
+  const primaryCat = document.getElementById('nsPrimaryCat').value.trim();
+  const primaryNewCat = document.getElementById('nsPrimaryNewCat').value.trim();
+  if (nsStatus.primary === 'add' && primaryCat) lines.push(`<span class="hl-ns-key">Primary:</span> ${primaryCat}; added`);
+  else if (nsStatus.primary === 'retained' && primaryCat) lines.push(`<span class="hl-ns-key">Primary:</span> ${primaryCat}; retained`);
+  else if (nsStatus.primary === 'changed' && primaryCat) lines.push(`<span class="hl-ns-key">Primary:</span> ${primaryCat}; changed`);
+  else if (nsStatus.primary === 'removed' && primaryCat) lines.push(`<span class="hl-ns-key">Primary:</span> ${primaryCat}; removed`);
+
+  const secondaryCat = document.getElementById('nsSecondaryCat').value.trim();
+  const secondaryNewCat = document.getElementById('nsSecondaryNewCat').value.trim();
+  if (nsStatus.secondary === 'add' && secondaryCat) lines.push(`<span class="hl-ns-key">Secondary:</span> ${secondaryCat}; added`);
+  else if (nsStatus.secondary === 'retained' && secondaryCat) lines.push(`<span class="hl-ns-key">Secondary:</span> ${secondaryCat}; retained`);
+  else if (nsStatus.secondary === 'changed' && secondaryCat) lines.push(`<span class="hl-ns-key">Secondary:</span> ${secondaryCat}; changed`);
+  else if (nsStatus.secondary === 'removed' && secondaryCat) lines.push(`<span class="hl-ns-key">Secondary:</span> ${secondaryCat}; removed`);
+
+  const securityCat = document.getElementById('nsSecurityCat').value.trim();
+  const securityNewCat = document.getElementById('nsSecurityNewCat').value.trim();
+  if (nsStatus.security === 'add' && securityCat) lines.push(`<span class="hl-ns-key">Security:</span> ${securityCat}; added`);
+  else if (nsStatus.security === 'retained' && securityCat) lines.push(`<span class="hl-ns-key">Security:</span> ${securityCat}; retained`);
+  else if (nsStatus.security === 'changed' && securityCat) lines.push(`<span class="hl-ns-key">Security:</span> ${securityCat}; changed`);
+  else if (nsStatus.security === 'removed' && securityCat) lines.push(`<span class="hl-ns-key">Security:</span> ${securityCat}; removed`);
+
+  const tagsCat = document.getElementById('nsTagsCat').value.trim();
+  const tagsNewCat = document.getElementById('nsTagsNewCat').value.trim();
+  if (nsStatus.tags === 'add' && tagsCat) lines.push(`<span class="hl-ns-key">Tags:</span> ${tagsCat}; added`);
+  else if (nsStatus.tags === 'retained' && tagsCat) lines.push(`<span class="hl-ns-key">Tags:</span> ${tagsCat}; retained`);
+  else if (nsStatus.tags === 'changed' && tagsCat) lines.push(`<span class="hl-ns-key">Tags:</span> ${tagsCat}; changed`);
+  else if (nsStatus.tags === 'removed' && tagsCat) lines.push(`<span class="hl-ns-key">Tags:</span> ${tagsCat}; removed`);
+
+  const changedLines = [];
+  if (nsStatus.primary === 'changed' && primaryNewCat) changedLines.push(`<span class="hl-ns-arrow">⇒Primary:</span> <span class="hl-ns-val">${primaryNewCat}</span>`);
+  if (nsStatus.secondary === 'changed' && secondaryNewCat) changedLines.push(`<span class="hl-ns-arrow">⇒Secondary:</span> <span class="hl-ns-val">${secondaryNewCat}</span>`);
+  if (nsStatus.security === 'changed' && securityNewCat) changedLines.push(`<span class="hl-ns-arrow">⇒Security:</span> <span class="hl-ns-val">${securityNewCat}</span>`);
+  if (nsStatus.tags === 'changed' && tagsNewCat) changedLines.push(`<span class="hl-ns-arrow">⇒Tags:</span> <span class="hl-ns-val">${tagsNewCat}</span>`);
+
+  if (changedLines.length > 0) {
+    lines.push('');
+    changedLines.forEach(l => lines.push(l));
+  }
+
+  lines.push('');
+  lines.push(`Comment: Disputes priority 2 <span class="hl-ns-key">Checkpoint</span> accepted at <span class="hl-ns-ts">${acc}</span>`);
+  lines.push('');
+  lines.push('-This site is a malware based on NetSTAR SHIELD.');
+
+  el.innerHTML = lines.join('\n');
+}
+
+function copyNSReport() {
+  const report = buildNSReport();
+  if (!report) return;
+  navigator.clipboard.writeText(report).then(() => {
+    const btn = document.getElementById('ns-copy-btn');
+    const icon = document.getElementById('ns-copy-icon');
+    const label = document.getElementById('ns-copy-label');
+    btn.classList.add('copied');
+    icon.textContent = '✓';
+    label.textContent = 'COPIED';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      icon.textContent = '⎘';
+      label.textContent = 'COPY';
+    }, 2000);
+  });
 }
 
 /* ──────────────────────────────────────────
@@ -356,6 +903,9 @@ function onUpdate() {
   const total  = urls.length;
   const dup    = Math.max(0, Math.min(parseInt(document.getElementById('dupInput').value) || 0, total));
   const upload = Math.max(0, total - dup);
+
+  /* Auto timestamp display */
+  document.getElementById('timestampValue').textContent = getAcceptedTimestamp();
 
   /* URL count label */
   const countEl = document.getElementById('urlCount');
@@ -386,11 +936,23 @@ function onUpdate() {
   /* Stats */
   document.getElementById('statTotal').textContent  = total;
   document.getElementById('statCat').textContent    = `${total}/${total}`;
-  document.getElementById('statDup').textContent    = formatDup(dup);   // ← UPDATED
+  document.getElementById('statDup').textContent    = formatDup(dup);
   document.getElementById('statUpload').textContent = `${upload}/${total}`;
 
   /* Wiki */
   buildWiki(total, dup, upload);
+
+  /* NS Manager Report — appears when Security Category is a number */
+  const nsSection = document.getElementById('ns-section');
+  const secNum = getSecurityCategoryNumber();
+  if (secNum !== null) {
+    nsSection.classList.add('visible');
+    document.getElementById('ns-badge-text').textContent =
+      `Checkpoint P2 · ${secNum} security URL${secNum === 1 ? '' : 's'}`;
+    renderNSReport();
+  } else {
+    nsSection.classList.remove('visible');
+  }
 }
 
 /* ──────────────────────────────────────────
@@ -434,22 +996,22 @@ function downloadFile() {
 
   const wb = XLSX.utils.book_new();
   const wsData = urls.map(url => [
-    url,   // A — cleaned URL
-    null,  // B — empty
-    null,  // C — empty
-    99999, // D
-    '',    // E — Immutable intentionally left blank on export
-    EXCL   // F
+    url,
+    null,
+    null,
+    99999,
+    '',
+    EXCL
   ]);
 
   const ws = XLSX.utils.aoa_to_sheet(wsData);
   ws['!cols'] = [
-    { wch: 55 }, // A
-    { wch: 4  }, // B
-    { wch: 4  }, // C
-    { wch: 8  }, // D
-    { wch: 12 }, // E
-    { wch: 100}  // F
+    { wch: 55 },
+    { wch: 4  },
+    { wch: 4  },
+    { wch: 8  },
+    { wch: 12 },
+    { wch: 100}
   ];
 
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
@@ -472,6 +1034,7 @@ function copyWiki() {
    INIT
 ────────────────────────────────────────── */
 document.getElementById('liveDateLabel').textContent = getReadableDate();
+updateNSFieldsVisibility();
 onUpdate();
 setInterval(() => { document.getElementById('liveDateLabel').textContent = getReadableDate(); }, 60000);
 </script>
