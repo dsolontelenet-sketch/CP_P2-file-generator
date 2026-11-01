@@ -988,7 +988,7 @@ function downloadFile() {
   const urls = getUrls();
   if (!name || !urls.length) return;
 
-  const EXCL = 'UCReviewed,CLReviewed,CLRetain,HTTPError,IWCC,InTheClear,Uncategorized,UnknownHost,Undeliverable,Deleted,StDnsError,NRD,DLCSkip';
+  const EXCL = 'UCReviewed,CLReviewed,CLRetain,HTTPError,IWCC,InTheClear,Uncategorized,UnknownHost,Undeliverable,StDnsError,NRD,DLCSkip';
 
   const wb = XLSX.utils.book_new();
   const wsData = urls.map(url => [
